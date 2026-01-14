@@ -138,7 +138,7 @@ export default function AboutPage() {
                 isVisible.hero ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
             >
-              Providing Coimbatore with premium dry fruits, dates, and nuts since 2000
+              Providing Coimbatore with premium dry fruits, dates, and nuts since 2020
             </p>
           </div>
         </div>
