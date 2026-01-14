@@ -34,7 +34,7 @@ const achievements = [
 ];
 
 export default function AboutPage() {
-  const [hoveredValue, setHoveredValue] = useState(null);
+  const [hoveredValue, setHoveredValue] = useState<number | null>(null);
   const [scrollY, setScrollY] = useState(0);
   const [isVisible, setIsVisible] = useState({
     hero: false,
@@ -44,17 +44,17 @@ export default function AboutPage() {
     cta: false
   });
 
-  const heroRef = useRef(null);
-  const storyRef = useRef(null);
-  const valuesRef = useRef(null);
-  const achievementsRef = useRef(null);
-  const ctaRef = useRef(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const storyRef = useRef<HTMLDivElement>(null);
+  const valuesRef = useRef<HTMLDivElement>(null);
+  const achievementsRef = useRef<HTMLDivElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
 
-      const checkVisibility = (ref, key) => {
+      const checkVisibility = (ref: React.RefObject<HTMLDivElement | null>, key: string) => {
         if (ref.current) {
           const rect = ref.current.getBoundingClientRect();
           const isInView = rect.top < window.innerHeight * 0.8 && rect.bottom > 0;
