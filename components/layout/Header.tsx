@@ -102,10 +102,10 @@ export default function Header() {
                   pathname === item.href
                     ? isScrolled
                       ? 'text-brown-800'
-                      : 'text-brown-900'
+                      : 'text-beige-100'
                     : isScrolled
                     ? 'text-brown-600 hover:text-brown-800'
-                    : 'text-brown-700 hover:text-brown-900',
+                    : 'text-beige-400 hover:text-white',
                   'after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-brown-700 after:transition-all after:duration-300',
                   pathname === item.href && 'after:w-full'
                 )}
