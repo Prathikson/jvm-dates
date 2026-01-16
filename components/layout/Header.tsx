@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 import { Menu, X, Phone, MapPin, Star } from 'lucide-react';
 import { cn, callPhoneNumber } from '@/lib/utils';
 import Button from '@/components/ui/Button';
@@ -28,17 +29,22 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Determine if we're on a page with white/light hero
+  const isLightHero = pathname === '/products' || pathname === '/contact' || pathname === '/about';
+
   return (
     <header
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
         isScrolled
-          ? 'bg-beige-50/95 backdrop-blur-md shadow-soft'
+          ? 'bg-white/95 backdrop-blur-md shadow-soft'
+          : isLightHero
+          ? 'bg-brown-800/95 backdrop-blur-sm'
           : 'bg-transparent'
       )}
     >
-      {/* Top Bar - Only visible when not scrolled */}
-      {!isScrolled && (
+      {/* Top Bar - Only visible when not scrolled and not on light hero pages */}
+      {!isScrolled && !isLightHero && (
         <div className="bg-brown-800 text-beige-50 py-2">
           <div className="container mx-auto px-4">
             <div className="flex flex-wrap items-center justify-between text-sm">
@@ -72,19 +78,35 @@ export default function Header() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-11 h-11 bg-brown-800 rounded-lg flex items-center justify-center text-beige-50 font-bold text-lg shadow-matte group-hover:shadow-matte-lg transition-all group-hover:scale-105">
-              JVM
+            {/* SVG Logo */}
+            <div className="w-11 h-11 rounded-lg overflow-hidden shadow-matte group-hover:shadow-matte-lg transition-all group-hover:scale-105 bg-white">
+              <Image
+                src="/assets/logo.svg"
+                alt="JVM Dates Logo"
+                width={44}
+                height={44}
+                className="w-full h-full object-contain"
+                priority
+              />
             </div>
             <div className="hidden sm:block">
               <div className={cn(
-                'font-display text-2xl font-semibold transition-colors tracking-tight',
-                isScrolled ? 'text-brown-900' : 'text-brown-900'
+                'font-bold text-2xl transition-colors tracking-tight',
+                isScrolled 
+                  ? 'text-brown-900' 
+                  : isLightHero 
+                  ? 'text-beige-50' 
+                  : 'text-brown-900'
               )}>
                 JVM Dates
               </div>
               <div className={cn(
                 'text-xs font-medium transition-colors',
-                isScrolled ? 'text-brown-600' : 'text-brown-700'
+                isScrolled 
+                  ? 'text-brown-600' 
+                  : isLightHero 
+                  ? 'text-beige-200' 
+                  : 'text-brown-700'
               )}>
                 Premium Quality
               </div>
@@ -102,11 +124,18 @@ export default function Header() {
                   pathname === item.href
                     ? isScrolled
                       ? 'text-brown-800'
-                      : 'text-beige-100'
+                      : isLightHero
+                      ? 'text-beige-50'
+                      : 'text-brown-900'
                     : isScrolled
                     ? 'text-brown-600 hover:text-brown-800'
-                    : 'text-brown-400 hover:text-beige-800',
-                  'after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-brown-700 after:transition-all after:duration-300',
+                    : isLightHero
+                    ? 'text-beige-200 hover:text-beige-50'
+                    : 'text-brown-700 hover:text-brown-900',
+                  'after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:transition-all after:duration-300',
+                  isScrolled || !isLightHero
+                    ? 'after:bg-brown-700'
+                    : 'after:bg-beige-50',
                   pathname === item.href && 'after:w-full'
                 )}
               >
@@ -134,6 +163,8 @@ export default function Header() {
               'md:hidden p-2 rounded-lg transition-colors',
               isScrolled
                 ? 'text-brown-900 hover:bg-beige-100'
+                : isLightHero
+                ? 'text-beige-50 hover:bg-white/10'
                 : 'text-brown-900 hover:bg-beige-100/50'
             )}
           >
@@ -147,7 +178,7 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-beige-50 shadow-soft-lg rounded-b-2xl overflow-hidden animate-slide-down">
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-soft-lg rounded-b-2xl overflow-hidden animate-slide-down">
             <div className="container mx-auto px-4 py-6 space-y-4">
               {navigation.map((item) => (
                 <Link
